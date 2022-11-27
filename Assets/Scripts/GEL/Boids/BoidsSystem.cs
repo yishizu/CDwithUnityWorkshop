@@ -8,6 +8,10 @@ namespace GEL.Boids
     {
         
         public int count;
+        public float separationStrength = 0.00002f;
+        public float cohesionStrength = 0.02f;
+        public float alignmentStrength = 0.02f;
+        
         public List<BoidAgent> agents = new List<BoidAgent>();
 
         public Vector3 center = Vector3.zero;
