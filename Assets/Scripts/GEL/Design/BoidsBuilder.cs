@@ -28,10 +28,9 @@ namespace GEL.Designer
         // Update is called once per frame
         void Update()
         {
-            foreach (var boidAgent in boidsSystem.agents)
-            {
-                boidAgent.Update();
-            }
+            boidsSystem.Update();
+
+            UpdateAgentObjects();
         }
 
         public void CreateAgentObjects()
@@ -44,6 +43,18 @@ namespace GEL.Designer
                 Quaternion rot = Quaternion.LookRotation(vel);
                 GameObject agentObj = Instantiate(agentPrefab, pos, rot, this.transform);
                 agentObjects.Add(agentObj);
+            }
+        }
+
+        public void UpdateAgentObjects()
+        {
+            int i = 0;
+            foreach (var agentObject in agentObjects)
+            {
+                agentObject.transform.position = boidsSystem.agents[i].position;
+                Quaternion rot = Quaternion.LookRotation(boidsSystem.agents[i].velocity);
+                agentObject.transform.rotation = rot;
+                i++;
             }
         }
     }

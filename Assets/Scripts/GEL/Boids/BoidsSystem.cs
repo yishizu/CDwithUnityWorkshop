@@ -12,7 +12,8 @@ namespace GEL.Boids
 
         public Vector3 center = Vector3.zero;
         public float boundsSize = 30f;
-        
+
+        public float neighborDistance = 5f;
         
         private Bounds _bounds = new Bounds();
 
@@ -31,6 +32,38 @@ namespace GEL.Boids
                 BoidAgent boidAgent = new BoidAgent(Utilities.GetRandomPosition(bounds), Utilities.GetRandomVelocity());
                 agents.Add(boidAgent);
             }
+            
+            
+        }
+
+        public void FindNeighbors()
+        {
+            foreach (BoidAgent boidAgent in agents)
+            {
+                List<BoidAgent> neighbors = new List<BoidAgent>();
+                foreach (var other in agents)
+                {
+                    if (boidAgent != other && (other.position - boidAgent.position).sqrMagnitude <neighborDistance)
+                    {
+                        neighbors.Add(other);
+                    }
+                }
+
+                boidAgent.neighbors = neighbors;
+            }
+        }
+
+        public void UpdateAgentsPositions()
+        {
+            foreach (var boidAgent in agents)
+            {
+                boidAgent.Update();
+            }
+        }
+        public void Update()
+        {
+            UpdateAgentsPositions();
+            FindNeighbors();
             
             
         }
