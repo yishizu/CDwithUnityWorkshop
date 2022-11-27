@@ -69,7 +69,7 @@ namespace GEL.Boids
             //Vector3.ClampMagnitude(steer, maxForce);
             //accelaration += steer;
         }
-        
+
         public void Update()
         {
             ComputeDesiredVelocity();
@@ -77,7 +77,9 @@ namespace GEL.Boids
             this.velocity += accelaration;
             Vector3.ClampMagnitude(velocity, maxSpeed);
             this.position += velocity;
-           
+
+
+            this.accelaration = Vector3.zero;
         }
     }
 

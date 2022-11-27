@@ -8,16 +8,16 @@ namespace GEL.Boids
     {
         
         public int count;
-        public float separationStrength = 0.00002f;
-        public float cohesionStrength = 0.02f;
-        public float alignmentStrength = 0.02f;
+        public float separationStrength = 0.0002f;
+        public float cohesionStrength = 0.002f;
+        public float alignmentStrength = 0.0002f;
         
         public List<BoidAgent> agents = new List<BoidAgent>();
 
         public Vector3 center = Vector3.zero;
         public float boundsSize = 30f;
 
-        public float neighborDistance = 5f;
+        public float neighborDistance = 60f;
         
         private Bounds _bounds = new Bounds();
 
@@ -34,6 +34,7 @@ namespace GEL.Boids
             for (int i = 0; i < count; i++)
             {
                 BoidAgent boidAgent = new BoidAgent(Utilities.GetRandomPosition(bounds), Utilities.GetRandomVelocity());
+                boidAgent.boidsSystem = this;
                 agents.Add(boidAgent);
             }
             
@@ -66,8 +67,9 @@ namespace GEL.Boids
         }
         public void Update()
         {
-            UpdateAgentsPositions();
             FindNeighbors();
+            UpdateAgentsPositions();
+            
             
             
         }
