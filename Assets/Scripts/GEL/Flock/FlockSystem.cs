@@ -5,7 +5,9 @@ using GEL.Flock;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class FlockSystem : MonoBehaviour
+namespace GEl.Flock
+{
+    public class FlockSystem : MonoBehaviour
 {
     public FlockAgent agentPrefab;
 
@@ -15,7 +17,7 @@ public class FlockSystem : MonoBehaviour
 
     [Range(10, 200)] public int agentCount = 50;
 
-    private const float AgentDensity = 0.08f;
+    private const float agentInitialRadius = 10f;
     [Range(1f, 100f)] public float driveFactor = 50f;
     [Range(1f, 10f)] public float maxSpeed = 5f;
     [Range(1f, 5f)] public float neighborRadius = 3f;
@@ -39,7 +41,7 @@ public class FlockSystem : MonoBehaviour
 
         for (int i = 0; i < agentCount; i++)
         {
-            FlockAgent agent = Instantiate(agentPrefab, Random.insideUnitSphere * agentCount * AgentDensity,
+            FlockAgent agent = Instantiate(agentPrefab, Random.insideUnitSphere * agentInitialRadius,
                 Quaternion.Euler((Vector3.one) * Random.Range(0f, 360f)),
                 transform);
             agent.name = "Agent "+ i.ToString();
@@ -55,6 +57,12 @@ public class FlockSystem : MonoBehaviour
         {
             List<Transform> context = GetNeighborObjects(agent);
             Vector3 move = behavior.CalculateVelocity(agent, context, this);
+            move *= driveFactor;
+            if (move.sqrMagnitude > squareMaxSpeed)
+            {
+                move = move.normalized*squareMaxSpeed;
+            }
+            agent.Update(move);
         }
     }
 
@@ -71,4 +79,6 @@ public class FlockSystem : MonoBehaviour
         }
         return context;
     }
+}
+
 }
